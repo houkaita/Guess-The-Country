@@ -1,0 +1,131 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-image: linear-gradient(to bottom, rgb(65, 168, 135), black);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content {
+    flex-direction: column;
+}
+
+h1 {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    color: white;
+    margin-top: 10%;
+    font-size: 30px;
+}
+
+#guess {
+    font-family: 'Montserrat', sans-serif;;
+    margin-top: 5%;
+    height: 5vh;
+    width: calc(60vw - 40px);
+    padding: 15px;
+    background-color: snow;
+    border-radius: 5em;
+    box-sizing: border-box;
+    border-color: aliceblue;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#submitGuess {
+    font-family: 'Montserrat', sans-serif;
+    position: absolute;
+    top: 75%;
+    right: 7px;
+    transform: translateY(-50%);
+    border-radius: 5rem;
+    padding: 0.7%;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: rgb(65, 168, 135);
+    font-size: 100%;
+    color: snow;
+}
+
+#suggestionList {
+    background-color: white;
+    text-decoration: none;
+}
+
+#guesses {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: column;
+    color: snow;
+}
+
+.singularGuess {
+    display: flex;
+    margin-top: 15px;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    width: 120px;
+    height: 80px;
+    margin-right: 10px;
+    padding: 6px;
+    border: 1px solid snow;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: #D60B00;
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap;  
+}
+
+.box && .green {
+    background-color: #10db50;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.box img, .box p {
+    max-width: 100%; 
+}
+
+.singularGuess img {
+    width: 100%;
+    height: 100%;
+}
+
+.singularGuess p {
+    display: inline;
+}
+
+.singularGuess img {
+    width: 120px; 
+    height: 80px;
+}
+
+.box:nth-child(4) {
+    font-size: 0.7rem;
+}
