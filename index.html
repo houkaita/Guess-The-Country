@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
 
     <title>Guess The Country</title>
 
@@ -18,12 +20,27 @@
       <div class="content">
         <h1>Guess The Country</h1>
         <div class="input-wrapper">
-          <input type="text" id="guess" placeholder="Enter a Country" list="suggestionList" />
-          <button type="submit" id="submitGuess" onclick="validate()">Guess</button>
+          <input
+            type="text"
+            id="guess"
+            placeholder="Enter a Country"
+            list="suggestionList"
+          />
+          <button type="submit" id="submitGuess" onclick="validate()">
+            Guess
+          </button>
         </div>
         <datalist id="suggestionList"></datalist>
         <div id="guesses">
-
+          <p id="subtitle">
+            <span>Flag</span>
+            <span>Name</span>
+            <span>Territory</span>
+            <span>Borders</span>
+            <span>Continent</span>
+            <span>Population</span>
+            <span>Language</span>
+          </p>
         </div>
       </div>
     </section>

@@ -4,7 +4,7 @@ const suggestionList = document.getElementById('suggestionList');
 
 const apiUrlAll = 'https://restcountries.com/v3.1/all';
 
-let randomCountry; 
+let randomCountry;
 
 const getRandomCountry = async () => {
     try {
@@ -15,6 +15,7 @@ const getRandomCountry = async () => {
             const data = await response.json();
             const randomIndex = Math.floor(Math.random() * data.length);
             randomCountry = data[randomIndex];  
+            console.log(randomCountry);
         }
     } catch (error) {
         console.error('Error:', error);
@@ -22,8 +23,14 @@ const getRandomCountry = async () => {
 };
 
 const loadRandomCountry = async () => {
-    await getRandomCountry();  
-    console.log('Random Country:', randomCountry);  
+    try {
+        await getRandomCountry(); 
+        /*const countryData = await getCountryInformation('Australia');
+        console.log('Country Information:', countryData);
+        randomCountry = countryData;*/
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
 window.addEventListener('load', loadRandomCountry);
@@ -90,83 +97,84 @@ async function validate() {
 
 
 function addGuess(countryData) {
-    const singularGuess = document.createElement('div');
-    const name = document.createElement('p');
-    const size = document.createElement('p');
-    const population = document.createElement('p');
-    const borders = document.createElement('p');
-    //const currency = document.createElement('p');
-    const continent = document.createElement('p');
-    const languages = document.createElement('p');
-    const flag = document.createElement('img');
+    let singularGuess = document.createElement('div');
+    let name = document.createElement('p');
+    let size = document.createElement('p');
+    let population = document.createElement('p');
+    let borders = document.createElement('p');
+    let continent = document.createElement('p');
+    let languages = document.createElement('p');
+    let flag = document.createElement('img');
 
     singularGuess.className = 'singularGuess';
 
     flag.src = countryData.flags.png;
     flag.className = 'box';
+
+    //Nome
+
+    name = buildElement(name, countryData.name.common, randomCountry.name.common);
+
+    //Continente
+
+    continent = buildElement(continent, countryData.continents[0], randomCountry.continents[0]);
     
-    name.textContent = countryData.name.common;
-    name.className = 'box';
-    if(randomCountry.name.common === countryData.name.common) {
-        flag.className += ' green';
-        name.className += ' green';
-    }
+    //Bordas
 
-    continent.textContent = countryData.continents; 
-    continent.className = 'box';
-    if(randomCountry.continents[0] === countryData.continents[0]) {
-        continent.className += ' green';
+    if (countryData.borders === undefined) {
+        borders.textContent = 'No borders';
+        if(randomCountry.borders === undefined) {
+            borders.classList.add('green');
+        }
+    } else {
+        borders.textContent = countryData.borders.join(', ');
+        const isCloseTo = countryData.borders.some(border => randomCountry.cca3.includes(border));
+    
+        if (isCloseTo) {
+            borders.classList.add('yellow');
+        } else {
+            borders.classList.remove('yellow');
+        }
     }
     
-    if(countryData.borders === undefined) {
-        borders.textContent = 'No boders';
+    borders.classList.add('box')
+
+    //lingua
+
+    const languageNames = Object.values(countryData.languages);
+    const languageRandomNames = Object.values(randomCountry.languages);
+    
+    const hasCommonLanguage = languageNames.some(language => languageRandomNames.includes(language));
+    
+    if (hasCommonLanguage) {
+        languages.classList.add('yellow');
     }
-    else {
-        borders.textContent = countryData.borders;
-    }
+    
+    const languageString = languageNames.join(', ');
+    const languageRandomString = languageRandomNames.join(', ');
+    
+    languages = buildElement(languages, languageString, languageRandomString);
+    
 
-    borders.className = 'box';
+    //População
 
-    /*const currencyCode = Object.keys(countryData.currencies)[0];  
-    const currencyData = countryData.currencies[currencyCode];
-
-    currency.textContent = currencyData.name;
-    currency.className = 'box';
- 
-    const currencyRandomCountryCode = Object.keys(randomCountry.currencies)[0];  
-    const currencyRandomCountryData = randomCountry.currencies[currencyRandomCountryCode];
- 
-    if(currencyRandomCountryData.name === currencyData.name) {
-        currency.className += ' green';
-    }*/
-
-    const languageCode = Object.keys(countryData.languages)[0];  
-    const languageData = countryData.languages[languageCode];
-
-    languages.textContent = languageData;
-    languages.className = 'box';
-
-    const languageRandomCountryCode = Object.keys(randomCountry.languages)[0];  
-    const languageRandomCountryData = randomCountry.languages[languageRandomCountryCode];
-
-    if(languageRandomCountryData === languageData) {
-        languages.className += ' green';
-    }
-
+    population = buildElement(population, countryData.population, randomCountry.population);
     population.textContent = populationText(countryData.population);
-    population.className = 'box';
 
-    if(randomCountry.population === countryData.population) {
-        population.className += ' green';
-    }
+    //Território
 
+    size = buildElement(size, countryData.area, randomCountry.area);
     size.textContent = territoryText(countryData.area);
-    size.className = 'box';
 
-    if(randomCountry.area === countryData.area) {
-        size.className += ' green';
+    //Gambiarra para tudo ficar verde
+
+    if(countryData.name.common === randomCountry.name.common) {
+        flag.classList.add('green');
+        borders.classList.add('green');
     }
     
+    //Adicionando elemntos ao HTML
+
     guesses.appendChild(singularGuess);
 
     singularGuess.appendChild(flag);
@@ -176,40 +184,46 @@ function addGuess(countryData) {
     singularGuess.appendChild(continent);
     singularGuess.appendChild(population);
     singularGuess.appendChild(languages);
-    //singularGuess.appendChild(currency);
+}
+
+function buildElement (element, countryInfo, randomInfo) {
+    element.textContent = countryInfo;
+    element.classList.add('box');
+
+    if(randomInfo === countryInfo) {
+        element.classList.add('green');
+    }
+
+    return element;
 }
 
 function populationText (population) {
     const realCountryPopulation = randomCountry.population;
     const range = (realCountryPopulation*10/100);
-
-    console.log(realCountryPopulation)
     
     if(population < range + realCountryPopulation && population > realCountryPopulation - range) {
-        return "Population is similar to this country"
+        return "Population is similar"
     }
     if(population > range + realCountryPopulation) {
-        return "Population is smaller than this country"
+        return "Population is smaller"
     }
     if(population < realCountryPopulation - range) {
-        return "Population is higher than this country"
+        return "Population is higher"
     }
 }
 
 function territoryText (territory) {
     const realCountryTerritory = randomCountry.area;
     const range = (realCountryTerritory*10/100);
-
-    console.log(realCountryTerritory)
     
     if(territory < range + realCountryTerritory && territory > realCountryTerritory - range) {
-        return "Territory is similar than this country"
+        return "Territory is similar"
     }
     if(territory > range + realCountryTerritory) {
-        return "Territory is smaller than this country"
+        return "Territory is smaller"
     }
     if(territory < realCountryTerritory - range) {
-        return "Territory is higher than this country"
+        return "Territory is higher"
     }
 }
 

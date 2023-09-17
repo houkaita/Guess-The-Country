@@ -100,15 +100,20 @@ h1 {
     border: 1px solid snow;
     text-align: center;
     box-sizing: border-box;
-    background-color: #D60B00;
+    background-color: #5d5453;
     word-wrap: break-word;      /* IE 5.5-7 */
     white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
     white-space: pre-wrap;  
 }
 
+.yellow {
+    background-color: #d0cd2e;
+}
+
 .green {
     background-color: #10db50 !important;
 }
+
 
 p {
     font-family: 'Montserrat', sans-serif;
@@ -134,4 +139,21 @@ p {
 
 .box:nth-child(4) {
     font-size: 0.7rem;
+}
+
+#subtitle {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#subtitle span {
+    margin-right: 4rem;
+}
+
+#subtitle span:nth-child(1) {
+    margin-left: 3rem;
+}
+
+.singularGuess {
+    margin-left: 1rem;
 }
