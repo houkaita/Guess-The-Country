@@ -4,9 +4,8 @@ const suggestionList = document.getElementById('suggestionList');
 
 const apiUrlAll = 'https://restcountries.com/v3.1/all';
 
-let randomCountry;  // Variable to store the random country information
+let randomCountry; 
 
-// Function to get a random country
 const getRandomCountry = async () => {
     try {
         const response = await fetch('https://restcountries.com/v3.1/all');
@@ -15,25 +14,19 @@ const getRandomCountry = async () => {
         } else {
             const data = await response.json();
             const randomIndex = Math.floor(Math.random() * data.length);
-            randomCountry = data[randomIndex];  // Store the random country information
+            randomCountry = data[randomIndex];  
         }
     } catch (error) {
         console.error('Error:', error);
     }
 };
 
-// Function to handle loading the random country
 const loadRandomCountry = async () => {
-    await getRandomCountry();  // Call the function to get a random country
-    console.log('Random Country:', randomCountry);  // Log the random country
+    await getRandomCountry();  
+    console.log('Random Country:', randomCountry);  
 };
 
-// Call the function when the page loads
 window.addEventListener('load', loadRandomCountry);
-
-// Now you can access the randomCountry variable throughout your code
-// For example:
-// console.log(randomCountry);
 
 async function getCountryInformation(selected) {
     try {
@@ -102,35 +95,77 @@ function addGuess(countryData) {
     const size = document.createElement('p');
     const population = document.createElement('p');
     const borders = document.createElement('p');
-    const currency = document.createElement('p');
+    //const currency = document.createElement('p');
     const continent = document.createElement('p');
+    const languages = document.createElement('p');
     const flag = document.createElement('img');
 
     singularGuess.className = 'singularGuess';
 
     flag.src = countryData.flags.png;
     flag.className = 'box';
-
+    
     name.textContent = countryData.name.common;
     name.className = 'box';
+    if(randomCountry.name.common === countryData.name.common) {
+        flag.className += ' green';
+        name.className += ' green';
+    }
 
     continent.textContent = countryData.continents; 
     continent.className = 'box';
+    if(randomCountry.continents[0] === countryData.continents[0]) {
+        continent.className += ' green';
+    }
     
-    borders.textContent = countryData.borders;
+    if(countryData.borders === undefined) {
+        borders.textContent = 'No boders';
+    }
+    else {
+        borders.textContent = countryData.borders;
+    }
+
     borders.className = 'box';
 
-    const currencyCode = Object.keys(countryData.currencies)[0];  // Assuming there's only one currency for simplicity
+    /*const currencyCode = Object.keys(countryData.currencies)[0];  
     const currencyData = countryData.currencies[currencyCode];
 
     currency.textContent = currencyData.name;
     currency.className = 'box';
+ 
+    const currencyRandomCountryCode = Object.keys(randomCountry.currencies)[0];  
+    const currencyRandomCountryData = randomCountry.currencies[currencyRandomCountryCode];
+ 
+    if(currencyRandomCountryData.name === currencyData.name) {
+        currency.className += ' green';
+    }*/
+
+    const languageCode = Object.keys(countryData.languages)[0];  
+    const languageData = countryData.languages[languageCode];
+
+    languages.textContent = languageData;
+    languages.className = 'box';
+
+    const languageRandomCountryCode = Object.keys(randomCountry.languages)[0];  
+    const languageRandomCountryData = randomCountry.languages[languageRandomCountryCode];
+
+    if(languageRandomCountryData === languageData) {
+        languages.className += ' green';
+    }
 
     population.textContent = populationText(countryData.population);
     population.className = 'box';
 
+    if(randomCountry.population === countryData.population) {
+        population.className += ' green';
+    }
+
     size.textContent = territoryText(countryData.area);
     size.className = 'box';
+
+    if(randomCountry.area === countryData.area) {
+        size.className += ' green';
+    }
     
     guesses.appendChild(singularGuess);
 
@@ -140,11 +175,8 @@ function addGuess(countryData) {
     singularGuess.appendChild(borders);
     singularGuess.appendChild(continent);
     singularGuess.appendChild(population);
-    singularGuess.appendChild(currency);
-}
-
-function checkCorrect () {
-
+    singularGuess.appendChild(languages);
+    //singularGuess.appendChild(currency);
 }
 
 function populationText (population) {
@@ -157,10 +189,10 @@ function populationText (population) {
         return "Population is similar to this country"
     }
     if(population > range + realCountryPopulation) {
-        return "Population is higher to this country"
+        return "Population is smaller than this country"
     }
     if(population < realCountryPopulation - range) {
-        return "Population is smaller to this country"
+        return "Population is higher than this country"
     }
 }
 
@@ -171,13 +203,13 @@ function territoryText (territory) {
     console.log(realCountryTerritory)
     
     if(territory < range + realCountryTerritory && territory > realCountryTerritory - range) {
-        return "Territory is similar to this country"
+        return "Territory is similar than this country"
     }
     if(territory > range + realCountryTerritory) {
-        return "Territory is higher to this country"
+        return "Territory is smaller than this country"
     }
     if(territory < realCountryTerritory - range) {
-        return "Territory is smaller to this country"
+        return "Territory is higher than this country"
     }
 }
 
